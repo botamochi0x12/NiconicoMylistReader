@@ -7,6 +7,41 @@ function onOpen() {
   spreadsheet.addMenu("スクリプト", entries);
 };
 
+// define names
+// TODO: use object
+const NICOVIDEO_ITEM_NAMES = [
+  /* data of a video entry in a list */
+  'id', 
+  'title', 
+  'link', 
+  'updated', 
+  /* video details */
+  'first_retrieve', 
+  'length', 
+  'view_counter', 
+  'mylist_counter', 
+  'user_nickname', 
+  'thumbnail_url' 
+  /* and tag */ 
+];
+const ITEMS_IN_JAPANESE = [
+  /*  */
+  '動画 ID', 
+  'タイトル', 
+  'リンク', 
+  'マイリスト登録時間', 
+  /*  */
+  '投稿', 
+  '長さ', 
+  '再生', 
+  'マイリス', 
+  '投稿者', 
+  'サムネ', 
+  'タグ'
+];
+
+const WITH_TAGS = false;
+
 function getListedVideoInfo(){
   var mylistIds = ControlSheet.getMylistIds();
   mylistIds.forEach(function(r,i){
@@ -18,7 +53,7 @@ function getListedVideoInfo(){
       if(  lastUpdate == "" ||  W3CTime.isT2Latest(lastUpdate,mylist.updated()) ){
         var rows = [];        
         mylist.videos().forEach(function(aVideo){    
-          var row=['updated','title','id','link'].map(function(name){
+          var row=[... NICOVIDEO_ITEM_NAMES.slice(0,4)].map(function(name){
             return aVideo[name];
           });
           var videoDetail = new VideoDetail(aVideo.id);
@@ -26,7 +61,7 @@ function getListedVideoInfo(){
           if( vd.status == 'ok'){
             vd.thumbnail_url="=image(\""+vd.thumbnail_url+"\")";
             // データの並びを整えて１行分のデータとして準備する．
-            row = row.concat(['thumbnail_url','first_retrieve','length','view_counter','mylist_counter','user_nickname'].map(function(name){
+            row = row.concat([... NICOVIDEO_ITEM_NAMES.slice(4)].map(function(name){
               return vd[name];
             }));
             var tags = videoDetail.getTags();
@@ -140,7 +175,7 @@ VideoDetail.prototype = {
 
 function setVideoInfos(id,rows)
 {
-  var columnItems = ['マイリスト登録時間','タイトル','id','URL','サムネ','投稿','長さ','再生','マイリス','投稿者','タグ'];
+  var columnItems = ITEMS_IN_JAPANESE;
   try{
     var sh = SpreadsheetApp.getActive().getSheetByName(id);
     rows.unshift(columnItems);
