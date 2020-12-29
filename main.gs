@@ -54,6 +54,10 @@ function getListedVideoInfo(){
         var rows = [];        
         mylist.videos().forEach(function(aVideo){    
           var row=[... NICOVIDEO_ITEM_NAMES.slice(0,4)].map(function(name){
+            if( name == 'link' ) {
+              // TODO: remove query parameters
+              return "=HYPERLINK(\"http://www.nicovideo.jp/watch/" + aVideo['id'] +"\"," + "\"" + aVideo['id'] + "\"" + ")";
+            }
             return aVideo[name];
           });
           var videoDetail = new VideoDetail(aVideo.id);
