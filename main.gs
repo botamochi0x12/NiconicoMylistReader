@@ -68,11 +68,15 @@ function getListedVideoInfo(){
             row = row.concat([... NICOVIDEO_ITEM_NAMES.slice(4)].map(function(name){
               return vd[name];
             }));
-            var tags = videoDetail.getTags();
-            if( tags.length > 1 ){
-              tags.forEach(function(t){
-                rows.push(row.concat([t]));
-              });
+            if( WITH_TAGS ){
+              var tags = videoDetail.getTags();
+              if( tags.length > 1 ){
+                tags.forEach(function(t){
+                  rows.push(row.concat([t]));
+                });
+              }else{
+                rows.push(row.concat(['']));
+              }
             }else{
               rows.push(row.concat(['']));
             }
