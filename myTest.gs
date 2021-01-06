@@ -1,4 +1,4 @@
-//QUnit.helpers(this);
+QUnit.helpers(this);
 
 function doGet( e ) {
   QUnit.urlParams( e.parameter );
@@ -13,6 +13,9 @@ function myTests() {
   module("ControlSheet正常テスト",{
     setup: function(){
       //control = new ControlSheet();
+      const sheet = SpreadsheetApp.getActive().getSheetByName("TestMyListInfo");
+      const rng = sheet.getRange(2,1,sheet.getLastRow()-1,3);
+      rng.setValues([54869962, '', '']);
     }
   });
 
@@ -21,10 +24,7 @@ function myTests() {
     ok(ids[0][0]==54869962);
   });
   
-  test("setResultのテスト", function() {
-    var ids = ControlSheet.getMylistIds();
-    ok(ids[0][0]==54869962);
-   
+  test("setResultのテスト", function() {   
     var t='2017-05-11T21:56:12+09:00';
     ControlSheet.setResult(0,t);
     ids = ControlSheet.getMylistIds();
@@ -69,7 +69,8 @@ function myTests() {
   
   test("updatedのテスト", function() {
     var mylist=new Mylist(23220687);
-    ok( mylist.updated() == '2017-04-17T18:26:37+09:00');
+    ok( mylist.updated() == '2019-11-03T04:08:51+09:00');
+    // NOTE: check 
   });  
   test("videosのテスト", function() {
     var mylist=new Mylist(23220687);
